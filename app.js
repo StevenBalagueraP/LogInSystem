@@ -17,6 +17,9 @@ const db = mysql.createConnection({
 const publicDIrectory = path.join(__dirname, './public');
 app.use(express.static(publicDIrectory));
 
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
 app.set('view engine', 'hbs');
 
 db.connect((err) => {
@@ -27,10 +30,12 @@ db.connect((err) => {
     }
 })
 
-app.get('/', (req, res) => {
-    res.render('index');
-});
+//define routes 
+
+app.use('/', require('./routes/pages'));
+app.use('/auth', require('./routes/auth'));
 
 app.listen(3000, () => {
     console.log('Listening on port 3000!');
 })
+
